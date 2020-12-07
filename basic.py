@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 
 class SimpleForm(FlaskForm):
+    breed = StringField("What breed are you?")
     submit = SubmitField('Click me')
 
 
@@ -15,7 +16,8 @@ def index():
     
     form = SimpleForm()
     if form.validate_on_submit():
-        flash("You just clicked the button !")
+        session["breed"] = form.breed.data
+        flash(f"The breed you typed is: {session['breed']} ")
         return redirect(url_for('index'))
 
     return render_template('index.html', form = form)
