@@ -14,16 +14,16 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app) # pass the application to the SQLAlchemy class
  
  ###########################
-  class Puppy(db.Model):
+class Puppy(db.Model):
       # manual table name choice:
-      __tablename__='puppies'
+    __tablename__='puppies'
 
     # attribute "id" set to col, type integer 
-      id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key = True)
 
-      name = db.Column(db.Text)
+    name = db.Column(db.Text)
 
-      age = db.Column(db.Integer)
+    age = db.Column(db.Integer)
 
 
     def __init__(self, name, age):
