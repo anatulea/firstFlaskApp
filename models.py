@@ -22,7 +22,7 @@ class Puppy(db.Model):
 
     #ONE TO MANY
     # Puppy to many toys
-    toys = db.relationship('Toy', backref ='puppy', lazy='dinamic')
+    toys = db.relationship('Toy', backref ='puppy', lazy='dynamic')
 
     #ONE TO ONE
     # ONE PUPPY ONE OWNER
@@ -38,7 +38,7 @@ class Puppy(db.Model):
         else:
             return f'Puppy {self.name} and it has no owner yet!'
 
-    def report_toys(self);
+    def report_toys(self):
         print('Here are my toys: ')
         for toy in self.toys:
             print(toy.item_name)
