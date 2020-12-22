@@ -1,30 +1,34 @@
-from flask import Flask, render_template, session, redirect, url_for, flash
-from flask_wtf import FlaskForm
-from wtforms import (StringField,
-                    SubmitField )
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'mysecretkey'
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-class SimpleForm(FlaskForm):
-    breed = StringField("What breed are you?")
-    submit = SubmitField('Click me')
+app = Flask(__name__) # create flask application
+
+# connect flask application with the database  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+ os.path.join(basedir, 'data.sqlite') # set the database at specified location
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-@app.route('/', methods = ['GET', 'POST'])
-def index():
-    
-    form = SimpleForm()
-    if form.validate_on_submit():
-        session["breed"] = form.breed.data
-        flash(f"The breed you typed is: {session['breed']} ")
-        return redirect(url_for('index'))
+db = SQLAlchemy(app) # pass the application to the SQLAlchemy class
+ 
+ ###########################
+  class Puppy(db.Model):
+      # manual table name choice:
+      __tablename__='puppies'
 
-    return render_template('index.html', form = form)
+    # attribute "id" set to col, type integer 
+      id = db.Column(db.Integer, primary_key = True)
 
-@app.route('/thankyou')
-def thankyou():
-    return render_template('thankyou.html')   
+      name = db.Column(db.Text)
 
-if __name__ =="__main__":
-    app.run(debug=True)
+      age = db.Column(db.Integer)
+
+
+    def __init__(self, name, age):
+        self.name = name
+        self. age = age
+
+    def __repr__(self):
+        return f"Puppy {self.name} is {self.age} years old."
